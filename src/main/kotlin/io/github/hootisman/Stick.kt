@@ -1,5 +1,6 @@
 package io.github.hootisman
 
+import io.github.hootisman.registries.StickItemRegistry
 import net.fabricmc.api.ModInitializer
 import org.slf4j.LoggerFactory
 
@@ -12,5 +13,6 @@ object Stick : ModInitializer {
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
 		logger.info("Hello Fabric world!")
+		StickItemRegistry.addModItems()
 	}
 }
