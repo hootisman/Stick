@@ -1,6 +1,6 @@
 package io.github.hootisman
 
-import io.github.hootisman.registries.StickItemRegistry
+import io.github.hootisman.item.HootItemRegistry
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput
@@ -21,7 +21,7 @@ object StickDataGenerator : DataGeneratorEntrypoint {
 		}
 
 		override fun generateItemModels(itemModelGenerator: ItemModelGenerator?) {
-			itemModelGenerator?.register(StickItemRegistry.STICK, Models.HANDHELD_ROD)
+			itemModelGenerator?.register(HootItemRegistry.STICK, Models.HANDHELD_ROD)
 		}
 
 	}
