@@ -1,5 +1,6 @@
 package io.github.hootisman.item
 
+import io.github.hootisman.entity.HootEntityRegistry
 import io.github.hootisman.entity.PotionSpellEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.projectile.PersistentProjectileEntity
@@ -21,16 +22,18 @@ class StickItem(settings: Settings?) : Item(settings) {
 
         if (world?.isClient() == true) return TypedActionResult.consume(stickstack);
 
-        val arrowStack: ItemStack = ItemStack(Items.TIPPED_ARROW).also { PotionUtil.setPotion(it, Potions.HARMING) }
-        var arrowEntity: PersistentProjectileEntity = ProjectileUtil.createArrowProjectile(user, arrowStack, 0f)
+//        val arrowStack: ItemStack = ItemStack(Items.TIPPED_ARROW).also { PotionUtil.setPotion(it, Potions.HARMING) }
+//        var arrowEntity: PersistentProjectileEntity = ProjectileUtil.createArrowProjectile(user, arrowStack, 0f)
 //
 //        arrowEntity.setVelocity(user, user?.pitch ?: 1f, user?.yaw ?: 1f, 0f, 3.0f, 1.0f)
 //        arrowEntity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY
 
 //        world?.spawnEntity(arrowEntity)
 
-        var entity: PotionSpellEntity
+        val spellEntity: PotionSpellEntity? = user?.let { PotionSpellEntity(it,world) }
+        spellEntity?.setVelocity(user, user.pitch ?: 1.0f, user.yaw ?: 1.0f, 0.0f, 3.0f, 1.0f)
 
+        world?.spawnEntity(spellEntity)
         return TypedActionResult.success(stickstack);
     }
 }
