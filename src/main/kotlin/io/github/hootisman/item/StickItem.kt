@@ -1,5 +1,6 @@
 package io.github.hootisman.item
 
+import io.github.hootisman.entity.PotionSpellEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.projectile.PersistentProjectileEntity
 import net.minecraft.entity.projectile.ProjectileUtil
@@ -22,11 +23,13 @@ class StickItem(settings: Settings?) : Item(settings) {
 
         val arrowStack: ItemStack = ItemStack(Items.TIPPED_ARROW).also { PotionUtil.setPotion(it, Potions.HARMING) }
         var arrowEntity: PersistentProjectileEntity = ProjectileUtil.createArrowProjectile(user, arrowStack, 0f)
+//
+//        arrowEntity.setVelocity(user, user?.pitch ?: 1f, user?.yaw ?: 1f, 0f, 3.0f, 1.0f)
+//        arrowEntity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY
 
-        arrowEntity.setVelocity(user, user?.pitch ?: 1f, user?.yaw ?: 1f, 0f, 3.0f, 1.0f)
-        arrowEntity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY
+//        world?.spawnEntity(arrowEntity)
 
-        world?.spawnEntity(arrowEntity)
+        var entity: PotionSpellEntity
 
         return TypedActionResult.success(stickstack);
     }

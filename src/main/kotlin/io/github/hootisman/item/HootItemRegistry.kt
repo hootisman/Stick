@@ -12,5 +12,5 @@ object HootItemRegistry {
 
     private fun registerItem(name: String, item: Item): Item = Registry.register(Registries.ITEM, Identifier(Stick.MOD_ID, name), item)
 
-    fun addModItems() = println("Adding Stick items!!!!")
+    fun addItems() = println("Adding Stick Mod items... ")
 }
