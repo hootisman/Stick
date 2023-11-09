@@ -23,6 +23,7 @@ import net.minecraft.util.math.MathHelper
 import net.minecraft.util.math.Vec3d
 import net.minecraft.world.RaycastContext
 import net.minecraft.world.World
+import kotlin.math.atan2
 
 class PotionSpellEntity(entityType: EntityType<out ProjectileEntity>?, world: World?) : ProjectileEntity(entityType, world) {
     constructor(x: Double, y: Double, z: Double, world: World?) : this(HootEntityRegistry.POTION_SPELL, world) {
@@ -30,6 +31,9 @@ class PotionSpellEntity(entityType: EntityType<out ProjectileEntity>?, world: Wo
     }
     constructor(entity: LivingEntity, world: World?) : this(entity.x, entity.eyeY - 0.1f.toDouble(), entity.z,world) {
         this.owner = entity
+        val dirVec: Vec3d = Vec3d.fromPolar(entity.pitch, entity.yaw)
+
+        LogUtils.getLogger().info("LookDir: " + dirVec.x + ", " + dirVec.y + ", " + dirVec.z )
     }
     companion object {
         @JvmStatic val COLOR: TrackedData<Int> = DataTracker.registerData(PotionSpellEntity::class.java,TrackedDataHandlerRegistry.INTEGER)
