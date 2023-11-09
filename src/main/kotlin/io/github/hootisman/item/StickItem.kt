@@ -31,7 +31,7 @@ class StickItem(settings: Settings?) : Item(settings) {
 //        world?.spawnEntity(arrowEntity)
 
         val spellEntity: PotionSpellEntity? = user?.let { PotionSpellEntity(it,world) }
-        spellEntity?.setVelocity(user, user.pitch ?: 1.0f, user.yaw ?: 1.0f, 0.0f, 3.0f, 1.0f)
+        spellEntity?.setVelocity(user, user.pitch ?: 1.0f, user.yaw ?: 1.0f, 0.0f, 2.0f, 1.0f)
 
         world?.spawnEntity(spellEntity)
         return TypedActionResult.success(stickstack);
