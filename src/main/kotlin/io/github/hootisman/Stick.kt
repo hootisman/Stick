@@ -2,6 +2,8 @@ package io.github.hootisman
 
 import io.github.hootisman.entity.HootEntityRegistry
 import io.github.hootisman.item.HootItemRegistry
+import io.github.hootisman.network.HootServerPackets
+import io.github.hootisman.network.ShiftDownC2SPacket
 import net.fabricmc.api.ModInitializer
 import org.slf4j.LoggerFactory
 
@@ -16,5 +18,7 @@ object Stick : ModInitializer {
 		logger.info("Hello Fabric world!")
 		HootItemRegistry.addItems()
 		HootEntityRegistry.addEntityTypes()
+
+		HootServerPackets.registerPacket(ShiftDownC2SPacket.handler)
 	}
 }
