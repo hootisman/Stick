@@ -1,8 +1,6 @@
 package io.github.hootisman.entity
 
 import com.mojang.logging.LogUtils
-import net.fabricmc.api.EnvType
-import net.fabricmc.api.Environment
 import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityType
 import net.minecraft.entity.LivingEntity
@@ -28,43 +26,39 @@ import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
 
 class PotionSpellEntity(entityType: EntityType<out ProjectileEntity>?, world: World?) : ProjectileEntity(entityType, world) {
-    constructor(x: Double, y: Double, z: Double, world: World?) : this(HootEntityRegistry.POTION_SPELL, world) {
-        this.setPosition(x,y,z)
-    }
-    constructor(entity: LivingEntity, world: World?) : this(entity.x, entity.eyeY - 0.1f.toDouble(), entity.z,world) {
-        this.owner = entity
-    }
+
     companion object {
         @JvmStatic val COLOR: TrackedData<Int> = DataTracker.registerData(PotionSpellEntity::class.java,TrackedDataHandlerRegistry.INTEGER)
+        private val DEFAULT_POTION: Potion = Potions.EMPTY
+        /**
+         * -1 == no color
+         */
+        private val DEFAULT_COLOR: Int = -1
     }
 
-    /**
-     * -1 == no color
-     */
-    val DEFAULT_COLOR: Int = PotionUtil.getColor(Potions.POISON)
+
     /**
      * reference to dataTracker.get(COLOR)
      */
-    var colorRef: Int
+    private var colorRef: Int
         get() = this.dataTracker.get(COLOR)
         set(color) = this.dataTracker.set(COLOR,color)
 
-    var colorRGB: Vec3d = Vec3d.ZERO //does set function, will NOT be Vec3d.ZERO
+    private lateinit var colorRGB: Vec3d
+    private var potion: Potion = DEFAULT_POTION
         set(value) {
-            field = Vec3d(
-                (this.colorRef shr 16 and 0xFF).toDouble() / 255.0f,
-                (this.colorRef shr 8 and 0xFF).toDouble() / 255.0f,
-                (this.colorRef shr 0 and 0xFF).toDouble() / 255.0f
-            )
+            field = value
+            this.initColor()
+            this.updateColorRGB()
         }
-    var potion: Potion
-
-    init {
-        this.potion = Potions.POISON
-        this.initColor()
-        this.updateColorRGB()
+    private constructor(x: Double, y: Double, z: Double, world: World?) : this(HootEntityRegistry.POTION_SPELL, world) {
+        this.setPosition(x,y,z)
     }
-
+    constructor(entity: LivingEntity, world: World?, potion: Potion) : this(entity.x, entity.eyeY - 0.1f.toDouble(), entity.z,world) {
+        this.owner = entity
+        this.potion = potion
+    }
+    constructor(entity: LivingEntity, world: World?) : this(entity,world, DEFAULT_POTION)
     override fun initDataTracker() = this.dataTracker.startTracking(COLOR,DEFAULT_COLOR)
     private fun initColor() {
         this.colorRef = if (this.potion == Potions.EMPTY)
@@ -86,13 +80,12 @@ class PotionSpellEntity(entityType: EntityType<out ProjectileEntity>?, world: Wo
     private fun isThereColor(): Boolean = this.colorRef != -1
     private fun isThereColor(nbt: NbtCompound?): Boolean? = nbt?.contains("Color", NbtElement.NUMBER_TYPE.toInt())
 
-    /**
-     * Updates colorRGB using its custom setter
-     *
-     * WILL NOT BE EQUAL TO Vec3d.ZERO!
-     */
     private fun updateColorRGB() {
-        this.colorRGB = Vec3d.ZERO
+        this.colorRGB = Vec3d(
+                (this.colorRef shr 16 and 0xFF).toDouble() / 255.0f,
+                (this.colorRef shr 8 and 0xFF).toDouble() / 255.0f,
+                (this.colorRef shr 0 and 0xFF).toDouble() / 255.0f
+            )
     }
 
     /**
@@ -107,17 +100,16 @@ class PotionSpellEntity(entityType: EntityType<out ProjectileEntity>?, world: Wo
         )
         return this.colorRGB.subtract(diff)
     }
-    private fun spawnPotionParticles(amt: Int){
-        spawnPotionParticles(amt, ParticleTypes.ENTITY_EFFECT, getParticleX(0.5), this.randomBodyY - 0.5, getParticleZ(0.5))
+    private fun spawnTrailParticles(amt: Int){
+        spawnTrailParticles(amt, ParticleTypes.ENTITY_EFFECT, getParticleX(0.5), this.randomBodyY - 0.5, getParticleZ(0.5))
     }
-    private fun spawnPotionParticles(amt: Int, type: ParticleEffect, x: Double, y: Double, z: Double){
+    private fun spawnTrailParticles(amt: Int, type: ParticleEffect, x: Double, y: Double, z: Double){
         if (!this.isThereColor() && amt <= 0) return
         updateColorRGB()
 
         for (j in 0 until amt) world.addParticle(type, x, y, z, this.colorRGB.x, this.colorRGB.y, this.colorRGB.z)
 
     }
-
     /**
      * only ran on server :)
      */
@@ -125,7 +117,6 @@ class PotionSpellEntity(entityType: EntityType<out ProjectileEntity>?, world: Wo
         this.updateColorRGB()
         val darkerRGB = this.getDarkerColor()
 
-        LogUtils.getLogger().info("darker color: $darkerRGB regular color: ${this.colorRGB}")
         for (i in 0 until amt){
             (this.world as ServerWorld).spawnParticles(ParticleTypes.ENTITY_EFFECT,
                 x,y,z, 0, darkerRGB.x, darkerRGB.y, darkerRGB.z, 1.0)
@@ -135,14 +126,11 @@ class PotionSpellEntity(entityType: EntityType<out ProjectileEntity>?, world: Wo
     override fun onEntityHit(entityHitResult: EntityHitResult?) {
         super.onEntityHit(entityHitResult)
         val entity: Entity? = entityHitResult?.entity
-//        LogUtils.getLogger().info("hit something!")
 
         if (entity is LivingEntity && entity.isAffectedBySplashPotions){
-//            LogUtils.getLogger().info("hit a living entity! ${entity.name} at ${entity.pos}")
             entity.damage(damageSources?.magic(), 0.0f)
             this.spawnImpactParticles(10, getParticleX(0.5), this.randomBodyY - 0.5, getParticleZ(0.5))
             this.potion.effects.forEach { effect ->
-//                LogUtils.getLogger().info("adding effect $effect")
 
                 //must create new StatusEffectInstance, otherwise it uses current instance
                 entity.addStatusEffect(StatusEffectInstance(effect.effectType,effect.duration,effect.amplifier), this.owner)
@@ -160,7 +148,7 @@ class PotionSpellEntity(entityType: EntityType<out ProjectileEntity>?, world: Wo
     override fun tick() {
         super.tick()
         if (this.world.isClient()){
-            this.spawnPotionParticles(6)
+            this.spawnTrailParticles(6)
             return
         }
         this.velocityDirty= true
