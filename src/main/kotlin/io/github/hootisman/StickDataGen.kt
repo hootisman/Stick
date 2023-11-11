@@ -1,6 +1,5 @@
 package io.github.hootisman
 
-import io.github.hootisman.item.HootItemRegistry
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput
@@ -9,7 +8,7 @@ import net.minecraft.data.client.*
 import net.minecraft.item.Item
 import net.minecraft.util.Identifier
 
-object StickDataGenerator : DataGeneratorEntrypoint {
+object StickDataGen : DataGeneratorEntrypoint {
 	override fun onInitializeDataGenerator(fabricDataGenerator: FabricDataGenerator) {
 		val pack = fabricDataGenerator.createPack()
 		pack.addProvider(::ModelGen)

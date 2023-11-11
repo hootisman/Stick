@@ -1,16 +1,16 @@
 package io.github.hootisman
 
-import io.github.hootisman.entity.HootEntityRendererRegistry
-import io.github.hootisman.network.HootClientPackets
+import io.github.hootisman.entity.StickEntityRenderers
+import io.github.hootisman.network.StickClientPackets
 import io.github.hootisman.network.ShiftDownS2CPacket
-import io.github.hootisman.render.HootColorProviders
+import io.github.hootisman.render.StickColorProviders
 import net.fabricmc.api.ClientModInitializer
 
 object StickClient : ClientModInitializer {
 	override fun onInitializeClient() {
 		// This entrypoint is suitable for setting up client-specific logic, such as rendering.
-		HootEntityRendererRegistry.addEntityRenderers()
-		HootColorProviders.registerColorProviders()
-		HootClientPackets.registerPacket(ShiftDownS2CPacket.handler)
+		StickEntityRenderers.addEntityRenderers()
+		StickColorProviders.registerColorProviders()
+		StickClientPackets.registerPacket(ShiftDownS2CPacket.handler)
 	}
 }

@@ -51,7 +51,7 @@ class PotionSpellEntity(entityType: EntityType<out ProjectileEntity>?, world: Wo
             this.initColor()
             this.updateColorRGB()
         }
-    private constructor(x: Double, y: Double, z: Double, world: World?) : this(HootEntityRegistry.POTION_SPELL, world) {
+    private constructor(x: Double, y: Double, z: Double, world: World?) : this(StickEntities.POTION_SPELL, world) {
         this.setPosition(x,y,z)
     }
     constructor(entity: LivingEntity, world: World?, potion: Potion) : this(entity.x, entity.eyeY - 0.1f.toDouble(), entity.z,world) {
