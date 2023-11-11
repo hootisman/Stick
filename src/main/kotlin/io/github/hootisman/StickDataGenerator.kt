@@ -20,9 +20,9 @@ object StickDataGenerator : DataGeneratorEntrypoint {
 		override fun generateBlockStateModels(blockStateModelGenerator: BlockStateModelGenerator?) {
 		}
 		override fun generateItemModels(itemModelGenerator: ItemModelGenerator?) {
-			this.registerItemModelTwoLayers(itemModelGenerator, HootItemRegistry.STICK, Models.HANDHELD_ROD,
-				Identifier("tipped_arrow_head").withPrefixedPath("item/"),
-				TextureMap.getId(HootItemRegistry.STICK))
+//			this.registerItemModelTwoLayers(itemModelGenerator, HootItemRegistry.STICK, Models.HANDHELD_ROD,
+//				Identifier("tipped_arrow_head").withPrefixedPath("item/"),
+//				TextureMap.getId(HootItemRegistry.STICK))
 		}
 		fun registerItemModelTwoLayers(itemModelGenerator: ItemModelGenerator?, item: Item, model: Model, layer0: Identifier,layer1: Identifier){
 			model.upload(ModelIds.getItemModelId(item), TextureMap.layered(layer0, layer1), itemModelGenerator?.writer)
