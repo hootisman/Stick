@@ -10,9 +10,9 @@ import net.minecraft.util.Identifier
 
 object HootEntityRegistry {
     val POTION_SPELL: EntityType<PotionSpellEntity>? = registerEntityType("potion_spell", EntityType.Builder.create(::PotionSpellEntity,SpawnGroup.MISC)
-        .setDimensions(0.25f,0.25f)
+        .setDimensions(0.5f,0.5f)
         .maxTrackingRange(4)
-        .trackingTickInterval(10)
+        .trackingTickInterval(20)
     )
 
     fun <T : Entity?> registerEntityType(name: String, type: EntityType.Builder<T>) = Registry.register(Registries.ENTITY_TYPE, Identifier(Stick.MOD_ID, name), type.build(name))

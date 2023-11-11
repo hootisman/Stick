@@ -7,6 +7,7 @@ import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.data.DataTracker
 import net.minecraft.entity.data.TrackedData
 import net.minecraft.entity.data.TrackedDataHandlerRegistry
+import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.entity.projectile.ProjectileEntity
 import net.minecraft.entity.projectile.ProjectileUtil
 import net.minecraft.nbt.NbtCompound
@@ -31,9 +32,6 @@ class PotionSpellEntity(entityType: EntityType<out ProjectileEntity>?, world: Wo
     }
     constructor(entity: LivingEntity, world: World?) : this(entity.x, entity.eyeY - 0.1f.toDouble(), entity.z,world) {
         this.owner = entity
-        val dirVec: Vec3d = Vec3d.fromPolar(entity.pitch, entity.yaw)
-
-        LogUtils.getLogger().info("LookDir: " + dirVec.x + ", " + dirVec.y + ", " + dirVec.z )
     }
     companion object {
         @JvmStatic val COLOR: TrackedData<Int> = DataTracker.registerData(PotionSpellEntity::class.java,TrackedDataHandlerRegistry.INTEGER)
@@ -42,7 +40,7 @@ class PotionSpellEntity(entityType: EntityType<out ProjectileEntity>?, world: Wo
     /**
      * -1 == no color
      */
-    val DEFAULT_COLOR: Int = PotionUtil.getColor(Potions.HEALING)
+    val DEFAULT_COLOR: Int = PotionUtil.getColor(Potions.POISON)
     /**
      * reference to dataTracker.get(COLOR)
      */
@@ -53,7 +51,7 @@ class PotionSpellEntity(entityType: EntityType<out ProjectileEntity>?, world: Wo
     var potion: Potion
 
     init {
-        this.potion = Potions.HEALING
+        this.potion = Potions.POISON
         this.initColor()
     }
 
@@ -99,53 +97,44 @@ class PotionSpellEntity(entityType: EntityType<out ProjectileEntity>?, world: Wo
         LogUtils.getLogger().info("hit something!")
 
         if (entity is LivingEntity && entity.isAffectedBySplashPotions){
-            LogUtils.getLogger().info("hit a living entity!")
-            entity.damage(entity.damageSources?.magic(), 0.0f)
-//            for (effect: StatusEffectInstance in this.potion.effects){
-            this.potion.effects.forEach { effect -> entity.addStatusEffect(effect) }
-            this.discard()
+            LogUtils.getLogger().info("hit a living entity! ${entity.name} at ${entity.pos}")
+            entity.damage(damageSources?.magic(), 1.0f)
+            this.potion.effects.forEach { effect ->
+                LogUtils.getLogger().info("adding effect $effect")
+
+                //must create new StatusEffectInstance, otherwise it uses current instance
+                entity.addStatusEffect(StatusEffectInstance(effect.effectType,effect.duration,effect.amplifier), this.owner)
+            }
+            this.kill()
         }
     }
 
     override fun onBlockHit(blockHitResult: BlockHitResult?) {
         super.onBlockHit(blockHitResult)
-        this.discard()
+        this.kill()
     }
     private fun collisionCheck(newPos: Vec3d){
         //gets EntityHitResult if collided with one, if not then gets HitResult using raycast
-        val hitResult: HitResult = ProjectileUtil.getEntityCollision(this.world, this,
-            this.pos, newPos,
-            this.boundingBox.stretch(this.velocity).expand(1.0), this::canHit)
-            ?: this.world.raycast(
-                RaycastContext(this.pos, newPos, RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, this)
-            )
-
-        this.onCollision(hitResult)
-        this.velocityDirty = true
+        this.checkBlockCollision()
     }
     override fun tick() {
         super.tick()
         if (this.world.isClient()){
             this.spawnParticles(2)
+            return
         }
-
-        if (this.prevPitch == 0.0f && this.prevYaw == 0.0f) {
-            setYaw((MathHelper.atan2(this.velocity.x, this.velocity.z) * 57.2957763671875).toFloat())
-            setPitch((MathHelper.atan2(this.velocity.y, this.velocity.horizontalLength()) * 57.2957763671875).toFloat())
-            this.prevYaw = this.yaw
-            this.prevPitch = this.pitch
-        }
-
+        this.velocityDirty= true
         var newPos: Vec3d = this.pos.add(this.velocity)
-        collisionCheck(newPos)
 
-//        setYaw((MathHelper.atan2(this.velocity.x, this.velocity.z) * 57.2957763671875).toFloat())
-//        setPitch((MathHelper.atan2(this.velocity.y, this.velocity.horizontalLength()) * 57.2957763671875).toFloat())
+        var hitResult = ProjectileUtil.getCollision(this, this::canHit)
+        var entityHitResult = ProjectileUtil.raycast(this,this.pos,newPos,this.boundingBox.stretch(this.velocity).expand(40.0),this::canHit, 40.0)
+        LogUtils.getLogger().info("entity: ${entityHitResult?.entity} ${entityHitResult?.type}")
+        if (entityHitResult?.entity != null) hitResult = entityHitResult
+        if (hitResult.type != HitResult.Type.MISS) this.onCollision(hitResult)
+        this.checkBlockCollision()
 
-//        setPitch(updateRotation(this.prevPitch, this.pitch))
-//        setYaw(updateRotation(this.prevYaw, this.yaw))
+        ProjectileUtil.setRotationFromVelocity(this,0.2f)
 
         this.setPos(newPos.x,newPos.y,newPos.z)
-        this.checkBlockCollision()
     }
 }
