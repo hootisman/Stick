@@ -54,7 +54,7 @@ class PotionSpellEntity(entityType: EntityType<out ProjectileEntity>?, world: Wo
     private constructor(x: Double, y: Double, z: Double, world: World?) : this(StickEntities.POTION_SPELL, world) {
         this.setPosition(x,y,z)
     }
-    constructor(entity: LivingEntity, world: World?, potion: Potion) : this(entity.x, entity.eyeY - 0.1f.toDouble(), entity.z,world) {
+    constructor(entity: LivingEntity, world: World?, potion: Potion) : this(entity.x, entity.eyeY - 0.05f.toDouble(), entity.z,world) {
         this.owner = entity
         this.potion = potion
     }
@@ -101,7 +101,7 @@ class PotionSpellEntity(entityType: EntityType<out ProjectileEntity>?, world: Wo
         return this.colorRGB.subtract(diff)
     }
     private fun spawnTrailParticles(amt: Int){
-        spawnTrailParticles(amt, ParticleTypes.ENTITY_EFFECT, getParticleX(0.5), this.randomBodyY - 0.5, getParticleZ(0.5))
+        spawnTrailParticles(amt, ParticleTypes.ENTITY_EFFECT, getParticleX(0.5), this.randomBodyY, getParticleZ(0.5))
     }
     private fun spawnTrailParticles(amt: Int, type: ParticleEffect, x: Double, y: Double, z: Double){
         if (!this.isThereColor() && amt <= 0) return
@@ -129,7 +129,7 @@ class PotionSpellEntity(entityType: EntityType<out ProjectileEntity>?, world: Wo
 
         if (entity is LivingEntity && entity.isAffectedBySplashPotions){
             entity.damage(damageSources?.magic(), 0.0f)
-            this.spawnImpactParticles(10, getParticleX(0.5), this.randomBodyY - 0.5, getParticleZ(0.5))
+            this.spawnImpactParticles(10, getParticleX(0.5), this.randomBodyY, getParticleZ(0.5))
             this.potion.effects.forEach { effect ->
 
                 //must create new StatusEffectInstance, otherwise it uses current instance
@@ -141,8 +141,7 @@ class PotionSpellEntity(entityType: EntityType<out ProjectileEntity>?, world: Wo
 
     override fun onBlockHit(blockHitResult: BlockHitResult?) {
         super.onBlockHit(blockHitResult)
-        LogUtils.getLogger().info("side: ${blockHitResult!!.side} offset: ${blockHitResult.side.vector}")
-        this.spawnImpactParticles(10,getParticleX(0.5), this.randomBodyY - 0.5, getParticleZ(0.5))
+        this.spawnImpactParticles(10,getParticleX(0.5), this.randomBodyY, getParticleZ(0.5))
         this.kill()
     }
     override fun tick() {

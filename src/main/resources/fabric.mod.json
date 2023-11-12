@@ -17,7 +17,7 @@
 	"entrypoints": {
 		"main": [
 			{
-				"value": "io.github.hootisman.Stick",
+				"value": "io.github.hootisman.StickMain",
 				"adapter": "kotlin"
 			}
 		],
@@ -29,7 +29,7 @@
 		],
 		"fabric-datagen": [
 			{
-				"value": "io.github.hootisman.StickDataGenerator",
+				"value": "io.github.hootisman.StickDataGen",
 				"adapter": "kotlin"
 			}
 		]
