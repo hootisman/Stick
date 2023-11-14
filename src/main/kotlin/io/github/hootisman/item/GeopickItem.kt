@@ -16,6 +16,10 @@ import net.minecraft.util.hit.HitResult
 class GeopickItem(settings: Settings?) : Item(settings), Custom1stPersonAnim{
     override val ANIM_KEY = Custom1stPersonAnim.AnimationKey.GEOPICK
 
+    /**
+     * reused brush code
+     * @see BrushItem
+     */
     override fun useOnBlock(context: ItemUsageContext?): ActionResult {
         val player: PlayerEntity? = context?.player
         if (this.getHitResult(player).type == HitResult.Type.BLOCK) player?.setCurrentHand(context.hand)
@@ -24,6 +28,10 @@ class GeopickItem(settings: Settings?) : Item(settings), Custom1stPersonAnim{
 
     override fun getMaxUseTime(stack: ItemStack?): Int = 200
 
+    /**
+     * reused brush code
+     * @see BrushItem
+     */
     private fun getHitResult(user: LivingEntity?): HitResult {
         return ProjectileUtil.getCollision(user,
             { entity: Entity -> !entity.isSpectator && entity.canHit() }, Math.sqrt(ServerPlayNetworkHandler.MAX_BREAK_SQUARED_DISTANCE) - 1.0
