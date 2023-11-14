@@ -58,48 +58,39 @@ object AnimationUtil {
         heldInvoker.invokeApplyEquipOffset(matrices, arm, equipProgress)
 
         val itemUseTime = heldInvoker.client.player!!.itemUseTimeLeft       //ticks till item finishes use
-        val prepareOffset = -30.0f
-        val prepareRange = -60.0f
-        val speed = 10.0f                                                    //speed of animation
-        val n: Float
-        LogUtils.getLogger().info("itemUseTime: $itemUseTime, subbed: ${itemUseTime - (speed / 2.0f)}")
-        if (itemUseTime >= (200 - (speed / 2.0f))){
-            n = smoothDegree(itemUseTime % speed, speed, 0.0f, prepareRange + prepareOffset, tickDelta)
-        }else {
-            n = smoothDegree(itemUseTime % speed, speed, prepareOffset,  prepareRange, tickDelta)
-        }
+        val offset = -30.0f         //offset
+        val range = -60.0f          //how far will be rotated
+        val frameSpeed = 10.0f      //200 must be divisible by frameSpeed ex: 200 % 10 = 0, MUST BE 0
+        var n: Float
 
-
-        if (arm != Arm.RIGHT) {
-            //transformation for left hand
-            matrices.translate(0.1, 0.83, 0.35)
-//            matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-80.0f))
-//            matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-90.0f))
-//            matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(n))
-            matrices.translate(-0.3, 0.22, 0.35)
+        if (itemUseTime >= (200 - (frameSpeed / 2.0f))){
+            n = smoothDegree(itemUseTime % frameSpeed, frameSpeed, 0.0f, range + offset, tickDelta)
         } else {
-            //transformation for right hand
-            matrices.translate(0.0, 0.0, 0.0)
-            matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(10.0f))
-            matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(10.0f))
-            matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(n))
-//            matrices.translate(-0.25, 0.22, 0.35)
-//            matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-80.0f))
-//            matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(90.0f))
-//            matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(0.0f))
-//            matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(n))
+            val rot: Float = if (arm == Arm.RIGHT) 10.0f else -10.0f
+            matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(rot))
+            matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(rot))
+
+            n = smoothDegree(itemUseTime % frameSpeed, frameSpeed, offset,  range, tickDelta)
         }
+
+        matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(n))
     }
     fun smoothDegree(frame: Float, speed: Float, offset: Float, range: Float, tickDelta: Float): Float {
         val frameDelta = 1.0f - (frame + 1.0f - tickDelta)/ speed // 0 to 1
         val n = MathHelper.lerpAngleDegrees(easeSpike(frameDelta), offset, offset + range)
-        LogUtils.getLogger().info("frame: $frame frameDelta: $frameDelta offset: $offset range: $range n: $n")
+//        LogUtils.getLogger().info("frame: $frame frameDelta: $frameDelta offset: $offset range: $range n: $n")
         return n.toFloat()
     }
     fun easeSpike(delta: Float): Float {
         //ease function for degree calculation, to be placed in lerp
         val x: Float = MathHelper.clamp(delta, 0.0f, 1f)
 
-        return ((MathHelper.cos((2.0f * MathHelper.PI * x) - MathHelper.PI) / 2.0f ) + 0.5f)
+        val result: Float = if (x > 0.5){
+            ((MathHelper.cos((2.0f * MathHelper.PI * x) - MathHelper.PI) / 2.0f ) + 0.5f).pow(6)
+        } else {
+            ((MathHelper.cos((2.0f * MathHelper.PI * x - 0.451f) - MathHelper.PI) / 1.8f ) + 0.5f).pow(6)
+        }
+
+        return result
     }
 }
