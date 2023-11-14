@@ -1,11 +1,12 @@
 {
-	"required": true,
-	"package": "io.github.hootisman.mixin.client",
-	"compatibilityLevel": "JAVA_17",
-	"client": [
-		"ExampleClientMixin"
-	],
-	"injectors": {
-		"defaultRequire": 1
+  "required": true,
+  "package": "io.github.hootisman.mixin.client",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+    "ExampleClientMixin",
+    "HeldItemRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
 	}
 }
