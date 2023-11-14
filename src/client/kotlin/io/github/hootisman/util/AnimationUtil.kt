@@ -59,13 +59,14 @@ object AnimationUtil {
 
         val itemUseTime = heldInvoker.client.player!!.itemUseTimeLeft       //ticks till item finishes use
         val prepareOffset = -30.0f
-        val prepareRange = 55.0f
-        val speed = 1.0f                                                    //speed of animation
+        val prepareRange = -60.0f
+        val speed = 10.0f                                                    //speed of animation
         val n: Float
-        if (itemUseTime >= (194)){
-            n = smoothDegree(itemUseTime % 10.0f, speed, prepareOffset, -prepareRange, tickDelta)
+        LogUtils.getLogger().info("itemUseTime: $itemUseTime, subbed: ${itemUseTime - (speed / 2.0f)}")
+        if (itemUseTime >= (200 - (speed / 2.0f))){
+            n = smoothDegree(itemUseTime % speed, speed, 0.0f, prepareRange + prepareOffset, tickDelta)
         }else {
-            n = smoothDegree(itemUseTime % 10.0f, speed, prepareOffset - 10.0f,  -prepareRange, tickDelta)
+            n = smoothDegree(itemUseTime % speed, speed, prepareOffset,  prepareRange, tickDelta)
         }
 
 
@@ -90,14 +91,15 @@ object AnimationUtil {
         }
     }
     fun smoothDegree(frame: Float, speed: Float, offset: Float, range: Float, tickDelta: Float): Float {
-        val frameDelta = 1.0f - (frame + 1.0f - tickDelta)/ 10.0f // 0 to 1
+        val frameDelta = 1.0f - (frame + 1.0f - tickDelta)/ speed // 0 to 1
         val n = MathHelper.lerpAngleDegrees(easeSpike(frameDelta), offset, offset + range)
         LogUtils.getLogger().info("frame: $frame frameDelta: $frameDelta offset: $offset range: $range n: $n")
         return n.toFloat()
     }
     fun easeSpike(delta: Float): Float {
         //ease function for degree calculation, to be placed in lerp
-        val x = MathHelper.clamp(delta, 0.05f, 0.95f)
-        return if (x <= 0.5f) (x / 0.5f).pow(2) else (1.0f - x).pow(2)
+        val x: Float = MathHelper.clamp(delta, 0.0f, 1f)
+
+        return ((MathHelper.cos((2.0f * MathHelper.PI * x) - MathHelper.PI) / 2.0f ) + 0.5f)
     }
 }
