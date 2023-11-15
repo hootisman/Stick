@@ -1,6 +1,6 @@
 package io.github.hootisman.item
 
-import io.github.hootisman.util.Custom1stPersonAnim
+import io.github.hootisman.util.CustomAnimatedItem
 import net.minecraft.entity.Entity
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.player.PlayerEntity
@@ -13,8 +13,8 @@ import net.minecraft.server.network.ServerPlayNetworkHandler
 import net.minecraft.util.ActionResult
 import net.minecraft.util.hit.HitResult
 
-class GeopickItem(settings: Settings?) : Item(settings), Custom1stPersonAnim{
-    override val ANIM_KEY = Custom1stPersonAnim.AnimationKey.GEOPICK
+class GeopickItem(settings: Settings?) : Item(settings), CustomAnimatedItem{
+    override val ANIM_KEY = CustomAnimatedItem.AnimationKey.GEOPICK
 
     /**
      * reused brush code

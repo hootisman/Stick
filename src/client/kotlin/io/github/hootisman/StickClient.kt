@@ -1,5 +1,6 @@
 package io.github.hootisman
 
+import io.github.hootisman.animation.HandAnimations
 import io.github.hootisman.entity.StickEntityRenderers
 import io.github.hootisman.network.StickClientPackets
 import io.github.hootisman.network.ShiftDownS2CPacket
@@ -12,5 +13,6 @@ object StickClient : ClientModInitializer {
 		StickEntityRenderers.addEntityRenderers()
 		StickColorProviders.registerColorProviders()
 		StickClientPackets.registerPacket(ShiftDownS2CPacket.handler)
+		HandAnimations.registerEntries()
 	}
 }

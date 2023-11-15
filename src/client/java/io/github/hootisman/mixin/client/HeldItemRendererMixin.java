@@ -1,7 +1,8 @@
 package io.github.hootisman.mixin.client;
 
-import io.github.hootisman.util.AnimationUtil;
-import io.github.hootisman.util.Custom1stPersonAnim;
+
+import io.github.hootisman.animation.AnimationHelper;
+import io.github.hootisman.util.CustomAnimatedItem;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.item.HeldItemRenderer;
@@ -25,16 +26,16 @@ public abstract class HeldItemRendererMixin {
     @Inject(method = "renderFirstPersonItem", at = @At("HEAD"), cancellable = true)
     private void onRenderFirstPersonItem(AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
         //if item has the interface, will have a custom 1st person animation and will cancel the rest of the method at the end
-        if (item.getItem() instanceof Custom1stPersonAnim customItem){
+        if (item.getItem() instanceof CustomAnimatedItem customItem){
             matrices.push();
             HeldItemRenderer heldItemRenderer = (HeldItemRenderer) (Object) this;   //working 'this'
             Arm arm = (hand == Hand.MAIN_HAND ? player.getMainArm() : player.getMainArm().getOpposite());
             boolean isRightArm = (arm == Arm.RIGHT);
 
             if (player.isUsingItem() && player.getItemUseTimeLeft() > 0 && player.getActiveHand() == hand){
-                AnimationUtil.INSTANCE.doHeldItemAnimFP(heldItemRenderer,matrices,tickDelta,arm,item,equipProgress);
+                AnimationHelper.INSTANCE.doHeldItemAnimFP(heldItemRenderer,matrices,tickDelta,arm,item,equipProgress);
             }else{
-                AnimationUtil.INSTANCE.doDefaultItemAnimation(heldItemRenderer,matrices,arm,equipProgress,swingProgress);
+                AnimationHelper.INSTANCE.doDefaultItemAnimation(heldItemRenderer,matrices,arm,equipProgress,swingProgress);
             }
 
             this.renderItem(player, item,
