@@ -1,5 +1,6 @@
 package io.github.hootisman
 
+import io.github.hootisman.block.StickBlocks
 import io.github.hootisman.entity.StickEntities
 import io.github.hootisman.item.StickItems
 import io.github.hootisman.network.StickServerPackets
@@ -18,6 +19,7 @@ object StickMain : ModInitializer {
 		logger.info("Hello Fabric world!")
 		StickItems.addItems()
 		StickEntities.addEntityTypes()
+		StickBlocks.addBlocks()
 
 		StickServerPackets.registerPacket(ShiftDownC2SPacket.handler)
 	}

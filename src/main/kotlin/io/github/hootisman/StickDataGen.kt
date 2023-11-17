@@ -1,5 +1,6 @@
 package io.github.hootisman
 
+import io.github.hootisman.block.StickBlocks
 import io.github.hootisman.item.StickItems
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator
@@ -19,6 +20,7 @@ object StickDataGen : DataGeneratorEntrypoint {
 	private class ModelGen(output: FabricDataOutput?) : FabricModelProvider(output) {
 
 		override fun generateBlockStateModels(blockStateModelGenerator: BlockStateModelGenerator?) {
+			blockStateModelGenerator?.registerBrushableBlock(StickBlocks.SUSPICIOUS_STONE)
 		}
 		override fun generateItemModels(itemModelGenerator: ItemModelGenerator?) {
 			val handheldRodModel: Model = createTwoLayeredModel("handheld_rod")
