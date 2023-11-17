@@ -8,17 +8,17 @@ import net.minecraft.item.ItemStack
 import net.minecraft.util.Arm
 import net.minecraft.util.math.MathHelper
 
-object AnimationHelper {
+object AnimationUtil {
 
     /**
      * Custom First Person held item animation
      */
-    fun doHeldItemAnimFP(heldItemRenderer: HeldItemRenderer,
-                         matrices: MatrixStack,
-                         tickDelta: Float,
-                         arm: Arm,
-                         stack: ItemStack,
-                         equipProgress: Float){
+    fun doHeldItemAnimation(heldItemRenderer: HeldItemRenderer,
+                            matrices: MatrixStack,
+                            tickDelta: Float,
+                            arm: Arm,
+                            stack: ItemStack,
+                            equipProgress: Float){
         val customItem = stack.item.asItem() as CustomAnimatedItem
         val anim = HandAnimations.get(customItem.ANIM_KEY)
         anim?.doAnimation(heldItemRenderer, matrices, tickDelta, arm, stack, equipProgress)

@@ -1,7 +1,7 @@
 package io.github.hootisman.mixin.client;
 
 
-import io.github.hootisman.animation.AnimationHelper;
+import io.github.hootisman.animation.AnimationUtil;
 import io.github.hootisman.util.CustomAnimatedItem;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -33,9 +33,9 @@ public abstract class HeldItemRendererMixin {
             boolean isRightArm = (arm == Arm.RIGHT);
 
             if (player.isUsingItem() && player.getItemUseTimeLeft() > 0 && player.getActiveHand() == hand){
-                AnimationHelper.INSTANCE.doHeldItemAnimFP(heldItemRenderer,matrices,tickDelta,arm,item,equipProgress);
-            }else{
-                AnimationHelper.INSTANCE.doDefaultItemAnimation(heldItemRenderer,matrices,arm,equipProgress,swingProgress);
+                AnimationUtil.INSTANCE.doHeldItemAnimation(heldItemRenderer,matrices,tickDelta,arm,item,equipProgress);
+            } else {
+                AnimationUtil.INSTANCE.doDefaultItemAnimation(heldItemRenderer,matrices,arm,equipProgress,swingProgress);
             }
 
             this.renderItem(player, item,
