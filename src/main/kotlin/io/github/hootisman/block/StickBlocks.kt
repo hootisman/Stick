@@ -22,7 +22,7 @@ object StickBlocks {
             .sounds(BlockSoundGroup.STONE)
             .strength(1.5f, 6.0f)
             .instrument(Instrument.BASEDRUM),
-        SoundEvents.BLOCK_STONE_HIT,
+        SoundEvents.ITEM_BRUSH_BRUSHING_GENERIC,    //fixes brush sound bug
         SoundEvents.BLOCK_STONE_BREAK))
 
     private fun registerBlock(name: String, block: Block): Block = Registry.register(Registries.BLOCK, Identifier(StickMain.MOD_ID, name), block)
