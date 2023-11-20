@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
 import net.minecraft.block.Block
 import net.minecraft.block.Blocks
 import net.minecraft.block.BrushableBlock
+import net.minecraft.block.MapColor
 import net.minecraft.block.enums.Instrument
 import net.minecraft.block.piston.PistonBehavior
 import net.minecraft.item.Item
@@ -17,11 +18,7 @@ import net.minecraft.util.Identifier
 
 object StickBlocks {
     val SUSPICIOUS_STONE = registerBlock("suspicious_stone", BrushableBlock(Blocks.STONE,
-        FabricBlockSettings.create().mapColor(Blocks.STONE.defaultMapColor)
-            .pistonBehavior(PistonBehavior.DESTROY)
-            .sounds(BlockSoundGroup.STONE)
-            .strength(1.5f, 6.0f)
-            .instrument(Instrument.BASEDRUM),
+        FabricBlockSettings.copyOf(Blocks.STONE).pistonBehavior(PistonBehavior.DESTROY),
         SoundEvents.ITEM_BRUSH_BRUSHING_GENERIC,    //fixes brush sound bug
         SoundEvents.BLOCK_STONE_BREAK))
 

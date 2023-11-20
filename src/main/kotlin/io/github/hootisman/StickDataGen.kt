@@ -5,18 +5,39 @@ import io.github.hootisman.item.StickItems
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider
 import net.minecraft.data.client.*
+import net.minecraft.data.server.loottable.vanilla.VanillaBlockLootTableGenerator
 import net.minecraft.item.Item
+import net.minecraft.registry.RegistryWrapper
+import net.minecraft.registry.tag.BlockTags
 import net.minecraft.util.Identifier
 import java.util.*
+import java.util.concurrent.CompletableFuture
 
 object StickDataGen : DataGeneratorEntrypoint {
 	override fun onInitializeDataGenerator(fabricDataGenerator: FabricDataGenerator) {
 		val pack = fabricDataGenerator.createPack()
 		pack.addProvider(::ModelGen)
+		pack.addProvider(::TagGen)
+		pack.addProvider(::LootTableGen)
 	}
+	private class LootTableGen(dataOutput: FabricDataOutput?) : FabricBlockLootTableProvider(dataOutput) {
+		override fun generate() {
+			addDrop(StickBlocks.SUSPICIOUS_STONE, VanillaBlockLootTableGenerator.dropsNothing())
+		}
 
+	}
+	private class TagGen(output: FabricDataOutput?,
+						 registriesFuture: CompletableFuture<RegistryWrapper.WrapperLookup>?
+	) : FabricTagProvider.BlockTagProvider(output, registriesFuture) {
+		override fun configure(arg: RegistryWrapper.WrapperLookup?) {
+			getOrCreateTagBuilder(BlockTags.PICKAXE_MINEABLE).add(StickBlocks.SUSPICIOUS_STONE)
+		}
+
+	}
 	private class ModelGen(output: FabricDataOutput?) : FabricModelProvider(output) {
 
 		override fun generateBlockStateModels(blockStateModelGenerator: BlockStateModelGenerator?) {
