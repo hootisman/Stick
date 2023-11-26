@@ -22,10 +22,10 @@ public abstract class BrushableBlockEntityMixin{
 
     @Inject(method = "brush",at = @At("HEAD"), cancellable = true)
     public void brush(long worldTime, PlayerEntity player, Direction hitDirection, CallbackInfoReturnable<Boolean> cir) {
-        BlockState state = ((BlockEntity)(Object)this).getCachedState();
-        if (!(player.getActiveItem().isOf(Items.BRUSH) == isBrushable(state))){
-            cir.setReturnValue(false);
-        }
+//        BlockState state = ((BlockEntity)(Object)this).getCachedState();
+//        if (!(player.getActiveItem().isOf(Items.BRUSH) == isBrushable(state))){
+//            cir.setReturnValue(false);
+//        }
     }
 
     @Unique

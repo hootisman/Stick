@@ -17,10 +17,10 @@ import net.minecraft.sound.SoundEvents
 import net.minecraft.util.Identifier
 
 object StickBlocks {
-    val SUSPICIOUS_STONE = registerBlock("suspicious_stone", BrushableBlock(Blocks.STONE,
-        FabricBlockSettings.copyOf(Blocks.STONE).pistonBehavior(PistonBehavior.DESTROY),
-        SoundEvents.ITEM_BRUSH_BRUSHING_GENERIC,    //fixes brush sound bug
-        SoundEvents.BLOCK_STONE_BREAK))
+//    val SUSPICIOUS_STONE = registerBlock("suspicious_stone", BrushableBlock(Blocks.STONE,
+//        FabricBlockSettings.copyOf(Blocks.STONE).pistonBehavior(PistonBehavior.DESTROY),
+//        SoundEvents.ITEM_BRUSH_BRUSHING_GENERIC,    //fixes brush sound bug
+//        SoundEvents.BLOCK_STONE_BREAK))
 
     private fun registerBlock(name: String, block: Block): Block = Registry.register(Registries.BLOCK, Identifier(StickMain.MOD_ID, name), block)
     fun addBlocks() = LogUtils.getLogger().info("Adding stick blocks..")

@@ -33,15 +33,14 @@ public abstract class BlockEntityTypeMixin {
     @Inject(method = "create(Ljava/lang/String;Lnet/minecraft/block/entity/BlockEntityType$Builder;)Lnet/minecraft/block/entity/BlockEntityType;", at = @At("HEAD"), cancellable = true)
     private static <T extends BlockEntity> void createBrushableBlockEntity(String id, BlockEntityType.Builder<T> builder, CallbackInfoReturnable<BlockEntityType<T>> cir){
         if (id.equals("brushable_block")){
-            Type<?> type = Util.getChoiceType(TypeReferences.BLOCK_ENTITY, id);
-            LogUtils.getLogger().info("did we register?");
-
-            BlockEntityType.Builder<BrushableBlockEntity> newBuilder = BlockEntityType.Builder.create(BrushableBlockEntity::new,
-                    Blocks.SUSPICIOUS_GRAVEL,
-                    Blocks.SUSPICIOUS_SAND,
-                    StickBlocks.INSTANCE.getSUSPICIOUS_STONE());
-
-            cir.setReturnValue((BlockEntityType<T>) Registry.register(Registries.BLOCK_ENTITY_TYPE, id, newBuilder.build(type)));
+//            Type<?> type = Util.getChoiceType(TypeReferences.BLOCK_ENTITY, id);
+//
+//            BlockEntityType.Builder<BrushableBlockEntity> newBuilder = BlockEntityType.Builder.create(BrushableBlockEntity::new,
+//                    Blocks.SUSPICIOUS_GRAVEL,
+//                    Blocks.SUSPICIOUS_SAND,
+//                    StickBlocks.INSTANCE.getSUSPICIOUS_STONE());
+//
+//            cir.setReturnValue((BlockEntityType<T>) Registry.register(Registries.BLOCK_ENTITY_TYPE, id, newBuilder.build(type)));
         }
     }
 }

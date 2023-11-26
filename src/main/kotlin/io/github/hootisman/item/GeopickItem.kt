@@ -70,7 +70,7 @@ class GeopickItem(settings: Settings?) : Item(settings), CustomAnimatedItem{
 
         val blockEntity = world?.getBlockEntity(blockHitResult.blockPos)
         val soundEvent = blockState?.soundGroup?.hitSound
-        world?.playSound(playerEntity, blockHitResult.blockPos, soundEvent, SoundCategory.BLOCKS, 0.8f, 1.7f)
+        world?.playSound(playerEntity, blockHitResult.blockPos, soundEvent, SoundCategory.BLOCKS, 0.8f, 3.0f)
         if (world?.isClient == false && blockEntity is BrushableBlockEntity && blockEntity.brush(world.time, playerEntity, blockHitResult.side)){
             LogUtils.getLogger().info("Finished pickign with geopick!")
         }
