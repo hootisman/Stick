@@ -26,7 +26,7 @@ object StickDataGen : DataGeneratorEntrypoint {
 	}
 	private class LootTableGen(dataOutput: FabricDataOutput?) : FabricBlockLootTableProvider(dataOutput) {
 		override fun generate() {
-			addDrop(StickBlocks.SUSPICIOUS_STONE, VanillaBlockLootTableGenerator.dropsNothing())
+//			addDrop(StickBlocks.SUSPICIOUS_STONE, VanillaBlockLootTableGenerator.dropsNothing())
 		}
 
 	}
@@ -34,14 +34,14 @@ object StickDataGen : DataGeneratorEntrypoint {
 						 registriesFuture: CompletableFuture<RegistryWrapper.WrapperLookup>?
 	) : FabricTagProvider.BlockTagProvider(output, registriesFuture) {
 		override fun configure(arg: RegistryWrapper.WrapperLookup?) {
-			getOrCreateTagBuilder(BlockTags.PICKAXE_MINEABLE).add(StickBlocks.SUSPICIOUS_STONE)
+//			getOrCreateTagBuilder(BlockTags.PICKAXE_MINEABLE).add(StickBlocks.SUSPICIOUS_STONE)
 		}
 
 	}
 	private class ModelGen(output: FabricDataOutput?) : FabricModelProvider(output) {
 
 		override fun generateBlockStateModels(blockStateModelGenerator: BlockStateModelGenerator?) {
-			blockStateModelGenerator?.registerBrushableBlock(StickBlocks.SUSPICIOUS_STONE)
+//			blockStateModelGenerator?.registerBrushableBlock(StickBlocks.SUSPICIOUS_STONE)
 		}
 		override fun generateItemModels(itemModelGenerator: ItemModelGenerator?) {
 			val handheldRodModel: Model = createTwoLayeredModel("handheld_rod")
