@@ -6,6 +6,9 @@ import net.minecraft.client.item.ModelPredicateProviderRegistry
 import net.minecraft.util.Identifier
 
 object CustomModelPredicateProvider {
+    /**
+     * for registering predicates of item models
+     */
     init {
         ModelPredicateProviderRegistry.register(StickItems.GEOPICK, Identifier(StickMain.MOD_ID, "picking"))
         { stack, world, entity, seed ->

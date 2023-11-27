@@ -1,6 +1,7 @@
 package io.github.hootisman.animation.impl
 
 import io.github.hootisman.animation.CustomAnimationHelper
+import io.github.hootisman.animation.EasingFunction
 import io.github.hootisman.animation.IHandAnimation
 import io.github.hootisman.mixin.client.HeldItemRendererInvoker
 import io.github.hootisman.util.CustomAnimatedItem
@@ -22,9 +23,10 @@ object GeopickAnimation : IHandAnimation {
         val itemUseTimeLeft = heldInvoker.client.player!!.itemUseTimeLeft       //ticks till item finishes use
         var offset = -30.0f         //offset
         var range = -60.0f          //how far will be rotated
-        val frameSpeed = 10.0f      //use time must be divisible by frameSpeed ex: time=200,speed=10,200 % 10 = 0, MUST BE 0 !!!
+        val totalFrames = 10.0f      //use time must be divisible by frameSpeed ex: time=200,speed=10,200 % 10 = 0, MUST BE 0 !!!
+        val currentFrame = itemUseTimeLeft % totalFrames
 
-        if (itemUseTimeLeft >= (200 - (frameSpeed / 2.0f))){
+        if (itemUseTimeLeft >= (200 - (totalFrames / 2.0f))){
             offset = 0.0f
             range += offset
         } else {
@@ -33,7 +35,9 @@ object GeopickAnimation : IHandAnimation {
             matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(rot))
             matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(rot))
         }
-        val n : Float = CustomAnimationHelper.currentAnimDegree(itemUseTimeLeft % frameSpeed, frameSpeed, offset, range, tickDelta)
+        val currentAnimTime = CustomAnimationHelper.calcAnimTime(currentFrame, totalFrames, tickDelta)
+        val n: Float = CustomAnimationHelper.lerpRotDegree(EasingFunction.MIRROR, currentAnimTime, range, offset)
+
         matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(n))
     }
 
