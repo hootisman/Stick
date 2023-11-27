@@ -1,13 +1,16 @@
 package io.github.hootisman.animation.impl
 
+import com.mojang.logging.LogUtils
 import io.github.hootisman.animation.IHandAnimation
 import io.github.hootisman.animation.HandAnimations
 import io.github.hootisman.mixin.client.HeldItemRendererInvoker
 import io.github.hootisman.util.CustomAnimatedItem
+import net.minecraft.client.network.ClientPlayerEntity
 import net.minecraft.client.render.item.HeldItemRenderer
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.item.ItemStack
 import net.minecraft.util.Arm
+import net.minecraft.util.Hand
 import net.minecraft.util.math.MathHelper
 import net.minecraft.util.math.RotationAxis
 import kotlin.math.pow
@@ -15,8 +18,8 @@ import kotlin.math.pow
 object GeopickAnimation : IHandAnimation {
     override val ANIM_KEY = CustomAnimatedItem.AnimationKey.GEOPICK
 
-    override fun doAnimation(heldItemRenderer: HeldItemRenderer, matrices: MatrixStack, tickDelta: Float,
-                             arm: Arm, stack: ItemStack, equipProgress: Float, swingProgress: Float) {
+    override fun doAnimation(playerEntity: ClientPlayerEntity, heldItemRenderer: HeldItemRenderer, matrices: MatrixStack,
+                             tickDelta: Float, arm: Arm, stack: ItemStack, equipProgress: Float, swingProgress: Float) {
 
         val heldInvoker = heldItemRenderer as HeldItemRendererInvoker
         heldInvoker.invokeApplyEquipOffset(matrices, arm, equipProgress)
@@ -30,6 +33,7 @@ object GeopickAnimation : IHandAnimation {
             offset = 0.0f
             range += offset
         } else {
+            //animation for when item is held down
             val rot: Float = if (arm == Arm.RIGHT) 10.0f else -10.0f
             matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(rot))
             matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(rot))

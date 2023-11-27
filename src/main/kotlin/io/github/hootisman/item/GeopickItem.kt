@@ -59,6 +59,8 @@ class GeopickItem(settings: Settings?) : Item(settings), CustomAnimatedItem{
         val playerEntity: PlayerEntity = user
         val blockHitResult: BlockHitResult = hitResult
         val currentTick: Int = this.getMaxUseTime(stack) - remainingUseTicks + 1
+
+        if (currentTick % 10 == 4) user.swingHand(Hand.MAIN_HAND)
         if (currentTick % 10 != 5) return
 
         val blockState = world?.getBlockState(blockHitResult.blockPos)
@@ -71,9 +73,9 @@ class GeopickItem(settings: Settings?) : Item(settings), CustomAnimatedItem{
         val blockEntity = world?.getBlockEntity(blockHitResult.blockPos)
         val soundEvent = blockState?.soundGroup?.hitSound
         world?.playSound(playerEntity, blockHitResult.blockPos, soundEvent, SoundCategory.BLOCKS, 0.8f, 3.0f)
-        if (world?.isClient == false && blockEntity is BrushableBlockEntity && blockEntity.brush(world.time, playerEntity, blockHitResult.side)){
-            LogUtils.getLogger().info("Finished pickign with geopick!")
-        }
+//        if (world?.isClient == false && blockEntity is BrushableBlockEntity && blockEntity.brush(world.time, playerEntity, blockHitResult.side)){
+//            LogUtils.getLogger().info("Finished pickign with geopick!")
+//        }
 
     }
     fun addDustParticles(world: World, hitResult: BlockHitResult, state: BlockState?, userRotation: Vec3d?, arm: Arm) {

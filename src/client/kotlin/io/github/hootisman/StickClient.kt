@@ -1,5 +1,6 @@
 package io.github.hootisman
 
+import io.github.hootisman.animation.CustomModelPredicateProvider
 import io.github.hootisman.animation.HandAnimations
 import io.github.hootisman.entity.StickEntityRenderers
 import io.github.hootisman.network.StickClientPackets
@@ -14,5 +15,6 @@ object StickClient : ClientModInitializer {
 		StickColorProviders.registerColorProviders()
 		StickClientPackets.registerPacket(ShiftDownS2CPacket.handler)
 		HandAnimations.registerEntries()
+		CustomModelPredicateProvider
 	}
 }

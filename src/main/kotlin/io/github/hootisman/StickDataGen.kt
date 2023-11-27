@@ -44,10 +44,12 @@ object StickDataGen : DataGeneratorEntrypoint {
 //			blockStateModelGenerator?.registerBrushableBlock(StickBlocks.SUSPICIOUS_STONE)
 		}
 		override fun generateItemModels(itemModelGenerator: ItemModelGenerator?) {
+			//stick
 			val handheldRodModel: Model = createTwoLayeredModel("handheld_rod")
 			this.registerItemModelTwoLayers(itemModelGenerator, StickItems.STICK, handheldRodModel,
 				Identifier(StickMain.MOD_ID,"stick_head").withPrefixedPath("item/"),
 				TextureMap.getId(StickItems.STICK))
+			//geopick
 			itemModelGenerator?.register(StickItems.GEOPICK, Models.HANDHELD)
 		}
 		fun registerItemModelTwoLayers(itemModelGenerator: ItemModelGenerator?, item: Item, model: Model, layer0: Identifier,layer1: Identifier){
