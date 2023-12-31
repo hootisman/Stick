@@ -1,10 +1,8 @@
 package io.github.hootisman.animation
 
-import io.github.hootisman.animation.impl.GeopickAnimation
 import net.minecraft.util.math.MathHelper
-import kotlin.math.pow
 
-object CustomAnimationHelper {
+object CustomAnimHelper {
     /**
      * calculates the current time in an animation as a float between 0 and 1
      *
@@ -29,4 +27,5 @@ object CustomAnimationHelper {
     fun lerpRotDegree(easeFunc: EasingFunction, delta: Float, rotDeg: Float, offset: Float): Float {
         return MathHelper.lerpAngleDegrees(easeFunc.ease(delta), offset, offset + rotDeg)
     }
+
 }

@@ -1,6 +1,6 @@
 package io.github.hootisman.animation.impl
 
-import io.github.hootisman.animation.CustomAnimationHelper
+import io.github.hootisman.animation.CustomAnimHelper
 import io.github.hootisman.animation.EasingFunction
 import io.github.hootisman.animation.IHandAnimation
 import io.github.hootisman.mixin.client.HeldItemRendererInvoker
@@ -18,25 +18,23 @@ object GeopickAnimation : IHandAnimation {
                              tickDelta: Float, arm: Arm, stack: ItemStack, equipProgress: Float, swingProgress: Float) {
 
         val heldInvoker = heldItemRenderer as HeldItemRendererInvoker
+        val itemUseTimeLeft = heldInvoker.client.player!!.itemUseTimeLeft  //ticks till item finishes use
+        val rotDeg = -60.0f          //degree to rotate
+        var offset = 0.0f            //offset
+        val totalFrames = 10.0f      //animation time in frames
+        val currentFrame = itemUseTimeLeft % totalFrames
+        val currentAnimTime = CustomAnimHelper.calcAnimTime(currentFrame, totalFrames, tickDelta)
         heldInvoker.invokeApplyEquipOffset(matrices, arm, equipProgress)
 
-        val itemUseTimeLeft = heldInvoker.client.player!!.itemUseTimeLeft       //ticks till item finishes use
-        var offset = -30.0f         //offset
-        var range = -60.0f          //how far will be rotated
-        val totalFrames = 10.0f      //use time must be divisible by frameSpeed ex: time=200,speed=10,200 % 10 = 0, MUST BE 0 !!!
-        val currentFrame = itemUseTimeLeft % totalFrames
-
-        if (itemUseTimeLeft >= (200 - (totalFrames / 2.0f))){
-            offset = 0.0f
-            range += offset
-        } else {
-            //animation for when item is held down
+        val isStartingUse: Boolean = itemUseTimeLeft >= (200 - (totalFrames / 2.0f))
+        if (!isStartingUse){
+            //when using long enough
+            offset = -30.0f
             val rot: Float = if (arm == Arm.RIGHT) 10.0f else -10.0f
             matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(rot))
             matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(rot))
         }
-        val currentAnimTime = CustomAnimationHelper.calcAnimTime(currentFrame, totalFrames, tickDelta)
-        val n: Float = CustomAnimationHelper.lerpRotDegree(EasingFunction.MIRROR, currentAnimTime, range, offset)
+        val n: Float = CustomAnimHelper.lerpRotDegree(EasingFunction.MIRROR, currentAnimTime, rotDeg, offset)
 
         matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(n))
     }
