@@ -7,6 +7,9 @@ import net.minecraft.block.BlockRenderType
 import net.minecraft.block.BlockState
 import net.minecraft.block.BrushableBlock
 import net.minecraft.block.entity.BrushableBlockEntity
+import net.minecraft.core.Direction
+import net.minecraft.core.particles.BlockParticleOption
+import net.minecraft.core.particles.ParticleTypes
 import net.minecraft.entity.Entity
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.player.PlayerEntity
@@ -21,6 +24,7 @@ import net.minecraft.particle.ParticleTypes
 import net.minecraft.server.network.ServerPlayNetworkHandler
 import net.minecraft.sound.SoundCategory
 import net.minecraft.sound.SoundEvents
+import net.minecraft.sounds.SoundSource
 import net.minecraft.util.ActionResult
 import net.minecraft.util.Arm
 import net.minecraft.util.Hand
@@ -41,8 +45,10 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.context.UseOnContext
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.RenderShape
+import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.phys.BlockHitResult
 import net.minecraft.world.phys.HitResult
+import net.minecraft.world.phys.Vec3
 
 class GeopickItem(settings: Properties?) : Item(settings), CustomAnimatedItem {
     override val ANIM_KEY = CustomAnimatedItem.AnimationKey.GEOPICK
@@ -86,20 +92,20 @@ class GeopickItem(settings: Properties?) : Item(settings), CustomAnimatedItem {
         }
 
         val blockEntity = world?.getBlockEntity(blockHitResult.blockPos)
-        val soundEvent = blockState?.soundGroup?.hitSound
-        world?.playSound(playerEntity, blockHitResult.blockPos, soundEvent, SoundCategory.BLOCKS, 0.8f, 3.0f)
+        val soundEvent = blockState?.soundType?.hitSound
+        world?.playSound(playerEntity, blockHitResult.blockPos, soundEvent, SoundSource.BLOCKS, 0.8f, 3.0f)
 //        if (world?.isClient == false && blockEntity is BrushableBlockEntity && blockEntity.brush(world.time, playerEntity, blockHitResult.side)){
 //            LogUtils.getLogger().info("Finished pickign with geopick!")
 //        }
 
     }
-    fun addDustParticles(world: World, hitResult: BlockHitResult, state: BlockState?, userRotation: Vec3d?, arm: Arm) {
-        val i = if (arm == Arm.RIGHT) 1 else -1
-        val j = world.getRandom().nextBetweenExclusive(7, 12)
-        val blockStateParticleEffect = BlockStateParticleEffect(ParticleTypes.BLOCK, state)
-        val direction = hitResult.side
+    fun addDustParticles(world: Level, hitResult: BlockHitResult, state: BlockState?, userRotation: Vec3?, arm: HumanoidArm) {
+        val i = if (arm == HumanoidArm.RIGHT) 1 else -1
+        val j = world.getRandom().nextInt(7, 12)
+        val blockStateParticleEffect = BlockParticleOption(ParticleTypes.BLOCK, state)
+        val direction = hitResult.direction
         val dustParticlesOffset = DustParticlesOffset.fromSide(userRotation, direction)
-        val vec3d = hitResult.pos
+        val vec3d = hitResult.location
         for (k in 0 until j) {
             world.addParticle(
                 blockStateParticleEffect,
