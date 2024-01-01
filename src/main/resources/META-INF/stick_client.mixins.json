@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "hootisman.stick.mixin.client",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+    "HeldItemRendererInvoker",
+    "HeldItemRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+	}
+}
