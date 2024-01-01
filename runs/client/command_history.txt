@@ -1,1 +1,0 @@
-/setblock -7 80 20 stick:example_block
