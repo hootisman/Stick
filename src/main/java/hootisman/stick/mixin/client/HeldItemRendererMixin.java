@@ -18,6 +18,7 @@ public abstract class HeldItemRendererMixin {
 
     @Shadow public abstract void renderItem(LivingEntity entity, ItemStack stack, ItemDisplayContext renderMode, boolean leftHanded, PoseStack matrices, MultiBufferSource vertexConsumers, int light);
 
+    //TODO uncomment when other classes moved
 //    @Inject(method = "renderFirstPersonItem", at = @At("HEAD"), cancellable = true)
 //    private void onRenderFirstPersonItem(AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
 //        //if item has the interface, will have a custom 1st person animation and will cancel the rest of the method at the end
