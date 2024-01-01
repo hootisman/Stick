@@ -75,9 +75,11 @@ description='''${mod_description}'''
 [[mixins]]
 config="stick_server.mixins.json"
 
-
 [[mixins]]
 config="stick_client.mixins.json"
+
+[[accessTransformers]]
+file="stick.at"
 
 # Features are specific properties of the game environment, that you may want to declare you require. This hootisman declares
 # that your mod requires GL version 3.2 or higher. Other features will be added. They are side aware so declaring this won't

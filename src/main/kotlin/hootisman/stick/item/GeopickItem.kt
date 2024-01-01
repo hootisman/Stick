@@ -2,44 +2,18 @@ package hootisman.stick.item
 
 import com.mojang.logging.LogUtils
 import hootisman.stick.util.CustomAnimatedItem
-import io.github.hootisman.util.CustomAnimatedItem
-import net.minecraft.block.BlockRenderType
-import net.minecraft.block.BlockState
-import net.minecraft.block.BrushableBlock
-import net.minecraft.block.entity.BrushableBlockEntity
 import net.minecraft.core.Direction
 import net.minecraft.core.particles.BlockParticleOption
 import net.minecraft.core.particles.ParticleTypes
-import net.minecraft.entity.Entity
-import net.minecraft.entity.LivingEntity
-import net.minecraft.entity.player.PlayerEntity
-import net.minecraft.entity.projectile.ProjectileUtil
-import net.minecraft.item.BrushItem
-import net.minecraft.item.BrushItem.DustParticlesOffset
-import net.minecraft.item.Item
-import net.minecraft.item.ItemStack
-import net.minecraft.item.ItemUsageContext
-import net.minecraft.particle.BlockStateParticleEffect
-import net.minecraft.particle.ParticleTypes
-import net.minecraft.server.network.ServerPlayNetworkHandler
-import net.minecraft.sound.SoundCategory
-import net.minecraft.sound.SoundEvents
 import net.minecraft.sounds.SoundSource
-import net.minecraft.util.ActionResult
-import net.minecraft.util.Arm
-import net.minecraft.util.Hand
-import net.minecraft.util.hit.BlockHitResult
-import net.minecraft.util.hit.HitResult
-import net.minecraft.util.math.Direction
-import net.minecraft.util.math.Vec3d
 import net.minecraft.world.InteractionHand
 import net.minecraft.world.InteractionResult
-import net.minecraft.world.World
 import net.minecraft.world.entity.Entity
 import net.minecraft.world.entity.HumanoidArm
 import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.entity.projectile.ProjectileUtil
+import net.minecraft.world.item.BrushItem.DustParticlesDelta
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.context.UseOnContext
@@ -88,7 +62,7 @@ class GeopickItem(settings: Properties?) : Item(settings), CustomAnimatedItem {
 
         if (blockState?.shouldSpawnTerrainParticles() == true && blockState.renderShape != RenderShape.INVISIBLE){
             val arm: HumanoidArm = if(user.usedItemHand == InteractionHand.MAIN_HAND) playerEntity.mainArm else playerEntity.mainArm.opposite
-            addDustParticles(world, hitResult, blockState, user.getRotationVec(0.0f), arm)
+            addDustParticles(world, hitResult, blockState, user.getViewVector(0.0f), arm)
         }
 
         val blockEntity = world?.getBlockEntity(blockHitResult.blockPos)
@@ -104,7 +78,7 @@ class GeopickItem(settings: Properties?) : Item(settings), CustomAnimatedItem {
         val j = world.getRandom().nextInt(7, 12)
         val blockStateParticleEffect = BlockParticleOption(ParticleTypes.BLOCK, state)
         val direction = hitResult.direction
-        val dustParticlesOffset = DustParticlesOffset.fromSide(userRotation, direction)
+        val dustParticlesOffset = DustParticlesDelta.fromDirection(userRotation, direction)
         val vec3d = hitResult.location
         for (k in 0 until j) {
             world.addParticle(
