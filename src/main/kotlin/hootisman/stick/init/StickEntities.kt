@@ -1,6 +1,7 @@
-package hootisman.stick.entity
+package hootisman.stick.init
 
 import hootisman.stick.StickMod
+import hootisman.stick.entity.PotionSpellEntity
 import net.minecraft.core.registries.Registries
 import net.minecraft.world.entity.Entity
 import net.minecraft.world.entity.EntityType
@@ -12,7 +13,7 @@ object StickEntities {
 
     val ENTITIES = DeferredRegister.create(Registries.ENTITY_TYPE, StickMod.MODID)
 
-    val POTION_SPELL = this.register("potion_spell",
+    val POTION_SPELL = register("potion_spell",
         EntityType.Builder.of(::PotionSpellEntity, MobCategory.MISC)
             .sized(0.5f,0.5f)
             .setTrackingRange(4)

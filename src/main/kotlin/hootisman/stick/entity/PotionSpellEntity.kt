@@ -1,10 +1,9 @@
 package hootisman.stick.entity
 
-import com.mojang.logging.LogUtils
+import hootisman.stick.init.StickEntities
 import net.minecraft.core.particles.ParticleOptions
 import net.minecraft.core.particles.ParticleTypes
 import net.minecraft.core.registries.BuiltInRegistries
-import net.minecraft.data.registries.VanillaRegistries
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.nbt.Tag
 import net.minecraft.network.syncher.EntityDataAccessor

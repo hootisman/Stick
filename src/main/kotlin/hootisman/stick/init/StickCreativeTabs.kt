@@ -1,11 +1,8 @@
-package hootisman.stick
+package hootisman.stick.init
 
-import hootisman.stick.item.StickItems
+import hootisman.stick.StickMod
 import net.minecraft.core.registries.Registries
-import net.minecraft.world.item.CreativeModeTab
-import net.minecraft.world.item.CreativeModeTabs
 import net.neoforged.neoforge.registries.DeferredRegister
-import java.util.function.Supplier
 
 object StickCreativeTabs {
     val CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, StickMod.MODID)

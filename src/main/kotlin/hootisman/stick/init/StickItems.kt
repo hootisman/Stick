@@ -1,10 +1,8 @@
-package hootisman.stick.item
+package hootisman.stick.init
 
 import hootisman.stick.StickMod
-import hootisman.stick.block.StickBlocks
-import net.minecraft.world.food.FoodProperties
-import net.minecraft.world.item.CreativeModeTab
-import net.minecraft.world.item.CreativeModeTabs
+import hootisman.stick.item.GeopickItem
+import hootisman.stick.item.StickItem
 import net.minecraft.world.item.Item
 import net.neoforged.neoforge.registries.DeferredRegister
 

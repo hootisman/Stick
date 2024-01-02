@@ -1,33 +1,14 @@
 package hootisman.stick
 
 import com.mojang.logging.LogUtils
-import hootisman.stick.block.StickBlocks
-import hootisman.stick.entity.StickEntities
-import hootisman.stick.item.StickItems
-import net.minecraft.client.Minecraft
-import net.minecraft.core.registries.BuiltInRegistries
-import net.minecraft.core.registries.Registries
-import net.minecraft.world.food.FoodProperties
-import net.minecraft.world.item.*
-import net.minecraft.world.item.CreativeModeTab.ItemDisplayParameters
-import net.minecraft.world.level.block.Blocks
-import net.minecraft.world.level.block.state.BlockBehaviour
-import net.minecraft.world.level.material.MapColor
-import net.neoforged.api.distmarker.Dist
+import hootisman.stick.init.StickBlocks
+import hootisman.stick.init.StickEntities
+import hootisman.stick.init.StickCreativeTabs
+import hootisman.stick.init.StickItems
 import net.neoforged.bus.api.IEventBus
-import net.neoforged.bus.api.SubscribeEvent
-import net.neoforged.fml.ModLoadingContext
 import net.neoforged.fml.common.Mod
-import net.neoforged.fml.common.Mod.EventBusSubscriber
-import net.neoforged.fml.config.ModConfig
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
-import net.neoforged.neoforge.common.NeoForge
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent
-import net.neoforged.neoforge.event.server.ServerStartingEvent
-import net.neoforged.neoforge.registries.DeferredRegister
-import java.util.function.Consumer
-import java.util.function.Supplier
 
 @Mod(StickMod.MODID)
 class StickMod(modEventBus: IEventBus) {

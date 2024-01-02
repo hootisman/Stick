@@ -1,4 +1,4 @@
-package hootisman.stick.block
+package hootisman.stick.init
 
 import hootisman.stick.StickMod
 import net.minecraft.sounds.SoundEvents
