@@ -1,5 +1,6 @@
 package hootisman.stick.util
 
+import hootisman.stick.entity.PotionSpellEntity
 import net.minecraft.sounds.SoundEvents
 import net.minecraft.sounds.SoundSource
 import net.minecraft.world.effect.MobEffectInstance
@@ -18,7 +19,7 @@ object PotionSpellUtil {
         player.level()?.playSound(null, player.blockPosition(), SoundEvents.ENDER_EYE_DEATH, SoundSource.PLAYERS, 1.0f, 1.0f)
 
         val spellEntity = PotionSpellEntity(player, player.level(),PotionUtils.getPotion(stickStack))
-        spellEntity.setVelocity(player, player.lerpTargetXRot(), player.lerpTargetYRot(), 0.0f, 2.0f, 1.0f)
+        spellEntity.shootFromRotation(player, player.lerpTargetXRot(), player.lerpTargetYRot(), 0.0f, 2.0f, 1.0f)
         player.level()?.addFreshEntity(spellEntity)
     }
 }

@@ -44,7 +44,7 @@ class StickMod(modEventBus: IEventBus) {
         StickItems.ITEMS.register(modEventBus)
         StickEntities.ENTITIES.register(modEventBus)
         StickCreativeTabs.CREATIVE_MODE_TABS.register(modEventBus)
-        NeoForge.EVENT_BUS.register(this)
+//        NeoForge.EVENT_BUS.register(this)
 
         modEventBus.addListener { event: BuildCreativeModeTabContentsEvent? ->
             this.addCreative(event!!)
