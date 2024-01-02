@@ -2,6 +2,7 @@ package hootisman.stick
 
 import com.mojang.logging.LogUtils
 import hootisman.stick.block.StickBlocks
+import hootisman.stick.entity.StickEntities
 import hootisman.stick.item.StickItems
 import net.minecraft.client.Minecraft
 import net.minecraft.core.registries.BuiltInRegistries
@@ -41,6 +42,7 @@ class StickMod(modEventBus: IEventBus) {
 
         StickBlocks.BLOCKS.register(modEventBus)
         StickItems.ITEMS.register(modEventBus)
+        StickEntities.ENTITIES.register(modEventBus)
         StickCreativeTabs.CREATIVE_MODE_TABS.register(modEventBus)
         NeoForge.EVENT_BUS.register(this)
 
@@ -65,6 +67,6 @@ class StickMod(modEventBus: IEventBus) {
     }
 
     private fun addCreative(event: BuildCreativeModeTabContentsEvent) {
-        if (event.tabKey === CreativeModeTabs.BUILDING_BLOCKS) event.accept(StickItems.EXAMPLE_BLOCK_ITEM)
+//        if (event.tabKey === CreativeModeTabs.BUILDING_BLOCKS) event.accept(StickItems.EXAMPLE_BLOCK_ITEM)
     }
 }

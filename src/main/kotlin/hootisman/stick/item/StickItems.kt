@@ -11,6 +11,12 @@ import net.neoforged.neoforge.registries.DeferredRegister
 object StickItems {
     val ITEMS = DeferredRegister.createItems(StickMod.MODID)
 
+    val STICK = ITEMS.register("stick") {
+        _ -> StickItem(Item.Properties())
+    }
+    val GEOPICK = ITEMS.register("geopick") {
+        _ -> GeopickItem(Item.Properties())
+    }
 //    val EXAMPLE_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("example_block", StickBlocks.EXAMPLE_BLOCK)
 
 //    val EXAMPLE_ITEM = ITEMS.registerSimpleItem(

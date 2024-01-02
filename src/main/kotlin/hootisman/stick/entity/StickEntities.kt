@@ -1,29 +1,26 @@
 package hootisman.stick.entity
 
-import io.github.hootisman.StickMain
-import io.github.hootisman.block.StickBlocks
-import net.minecraft.block.Blocks
-import net.minecraft.block.entity.BlockEntity
-import net.minecraft.block.entity.BlockEntityType
-import net.minecraft.block.entity.BrushableBlockEntity
-import net.minecraft.datafixer.TypeReferences
-import net.minecraft.entity.Entity
-import net.minecraft.entity.EntityType
-import net.minecraft.entity.SpawnGroup
-import net.minecraft.registry.Registries
-import net.minecraft.registry.Registry
-import net.minecraft.util.Identifier
-import net.minecraft.util.Util
+import hootisman.stick.StickMod
+import net.minecraft.core.registries.Registries
+import net.minecraft.world.entity.Entity
+import net.minecraft.world.entity.EntityType
+import net.minecraft.world.entity.MobCategory
+import net.neoforged.neoforge.registries.DeferredHolder
+import net.neoforged.neoforge.registries.DeferredRegister
 
 object StickEntities {
-    val POTION_SPELL: EntityType<PotionSpellEntity>? = registerEntityType("potion_spell", EntityType.Builder.create(::PotionSpellEntity,SpawnGroup.MISC)
-        .setDimensions(0.5f,0.5f)
-        .maxTrackingRange(4)
-        .trackingTickInterval(20)
+
+    val ENTITIES = DeferredRegister.create(Registries.ENTITY_TYPE, StickMod.MODID)
+
+    val POTION_SPELL = this.register("potion_spell",
+        EntityType.Builder.of(::PotionSpellEntity, MobCategory.MISC)
+            .sized(0.5f,0.5f)
+            .setTrackingRange(4)
+            .setUpdateInterval(20)
     )
-
-
-    fun <T : Entity?> registerEntityType(name: String, type: EntityType.Builder<T>) = Registry.register(Registries.ENTITY_TYPE, Identifier(StickMain.MOD_ID, name), type.build(name))
-
-    fun addEntityTypes() = println("Adding Stick mod entity types...")
+    private fun <T : Entity> register(name: String, builder: EntityType.Builder<T>): DeferredHolder<EntityType<*>, EntityType<T>> {
+        return ENTITIES.register(name) {
+            _ -> builder.build(StickMod.MODID + ":" + name)
+        }
+    }
 }

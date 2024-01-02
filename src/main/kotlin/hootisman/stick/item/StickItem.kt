@@ -11,14 +11,23 @@ import net.minecraft.potion.Potions
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.util.Hand
 import net.minecraft.util.TypedActionResult
+import net.minecraft.world.InteractionHand
+import net.minecraft.world.InteractionResultHolder
 import net.minecraft.world.World
+import net.minecraft.world.entity.player.Player
+import net.minecraft.world.item.Item
+import net.minecraft.world.item.Item.Properties
+import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.alchemy.PotionUtils
+import net.minecraft.world.item.alchemy.Potions
+import net.minecraft.world.level.Level
 
-class StickItem(settings: Settings?) : Item(settings) {
-    override fun getDefaultStack(): ItemStack = PotionUtil.setPotion(ItemStack(this), Potions.POISON)
-    override fun use(world: World?, user: PlayerEntity?, hand: Hand?): TypedActionResult<ItemStack> {
-        val stickStack = user?.getStackInHand(hand)
-        user?.itemCooldownManager?.set(this, 20);
-        if (world?.isClient() == true) return TypedActionResult.consume(stickStack)
+class StickItem(settings: Properties?) : Item(settings) {
+    override fun getDefaultInstance(): ItemStack = PotionUtils.setPotion(ItemStack(this), Potions.POISON)
+    override fun use(world: Level?, user: Player?, hand: InteractionHand?): InteractionResultHolder<ItemStack> {
+        val stickStack = user?.getItemInHand(hand)
+        user?.cooldowns?.addCooldown(this, 20);
+        if (world?.isClientSide == true) return InteractionResultHolder.consume(stickStack)
 
 
         user?.let {
@@ -26,6 +35,6 @@ class StickItem(settings: Settings?) : Item(settings) {
             ServerPlayNetworking.send(it as ServerPlayerEntity?,ServerNetworkIds.SHIFT_DOWN_ID,pack)
         }
 
-        return TypedActionResult.success(stickStack);
+        return InteractionResultHolder.success(stickStack);
     }
 }
