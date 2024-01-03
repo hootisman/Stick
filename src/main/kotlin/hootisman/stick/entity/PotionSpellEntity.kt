@@ -1,5 +1,6 @@
 package hootisman.stick.entity
 
+import com.mojang.logging.LogUtils
 import hootisman.stick.init.StickEntities
 import net.minecraft.core.particles.ParticleOptions
 import net.minecraft.core.particles.ParticleTypes
@@ -150,8 +151,9 @@ class PotionSpellEntity(entityType: EntityType<out Projectile>?, world: Level?) 
             this.spawnTrailParticles(6)
             return
         }
-//        this.velocityDirty= true
+        this.hasImpulse = true
         var newPos: Vec3 = this.position().add(this.deltaMovement)
+        LogUtils.getLogger().info("Position: ${this.position()} Delta: ${this.deltaMovement}")
 
         var hitResult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity)
         var entityHitResult = ProjectileUtil.getEntityHitResult(this,this.position(),newPos,this.boundingBox.expandTowards(this.deltaMovement).inflate(40.0),this::canHitEntity, 40.0)

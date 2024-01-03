@@ -16,8 +16,8 @@ object StickEntities {
     val POTION_SPELL = register("potion_spell",
         EntityType.Builder.of(::PotionSpellEntity, MobCategory.MISC)
             .sized(0.5f,0.5f)
-            .setTrackingRange(4)
-            .setUpdateInterval(20)
+            .clientTrackingRange(4)
+            .updateInterval(10)
     )
     private fun <T : Entity> register(name: String, builder: EntityType.Builder<T>): DeferredHolder<EntityType<*>, EntityType<T>> {
         return ENTITIES.register(name) {
