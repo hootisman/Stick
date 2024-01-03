@@ -4,6 +4,8 @@ import hootisman.stick.StickMod
 import hootisman.stick.item.GeopickItem
 import hootisman.stick.item.StickItem
 import net.minecraft.world.item.Item
+import net.minecraft.world.item.alchemy.PotionUtils
+import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent
 import net.neoforged.neoforge.registries.DeferredRegister
 
 object StickItems {
@@ -14,5 +16,14 @@ object StickItems {
     }
     val GEOPICK = ITEMS.register("geopick") {
         _ -> GeopickItem(Item.Properties())
+    }
+
+    fun onRegisterColorHandlers(event: RegisterColorHandlersEvent.Item){
+        event.register(
+            {
+                stack, tintIndex -> if (tintIndex == 0) PotionUtils.getColor(stack) else -1
+            },
+            STICK
+        )
     }
 }

@@ -1,7 +1,7 @@
 package hootisman.stick.init
 
 import hootisman.stick.StickMod
-import hootisman.stick.render.PotionSpellEntityRenderer
+import hootisman.stick.entity.render.PotionSpellEntityRenderer
 import net.minecraft.core.registries.Registries
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.Mod

@@ -1,4 +1,4 @@
-package hootisman.stick.render
+package hootisman.stick.entity.render
 
 import net.minecraft.client.renderer.entity.EntityRenderer
 import net.minecraft.client.renderer.entity.EntityRendererProvider

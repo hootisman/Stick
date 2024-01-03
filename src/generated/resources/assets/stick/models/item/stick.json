@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/handheld_rod",
+  "textures": {
+    "layer0": "stick:item/stick_head",
+    "layer1": "stick:item/stick"
+  }
+}
