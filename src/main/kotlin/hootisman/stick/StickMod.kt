@@ -1,13 +1,11 @@
 package hootisman.stick
 
 import com.mojang.logging.LogUtils
-import hootisman.stick.init.StickBlocks
-import hootisman.stick.init.StickEntities
-import hootisman.stick.init.StickCreativeTabs
-import hootisman.stick.init.StickItems
+import hootisman.stick.init.*
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.fml.common.Mod
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
+import net.neoforged.neoforge.common.NeoForge
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent
 
 @Mod(StickMod.MODID)
@@ -26,6 +24,7 @@ class StickMod(modEventBus: IEventBus) {
         StickEntities.ENTITIES.register(modEventBus)
         StickCreativeTabs.CREATIVE_MODE_TABS.register(modEventBus)
 //        NeoForge.EVENT_BUS.register(this)
+        modEventBus.register(StickEntityRenderers)
 
         modEventBus.addListener { event: BuildCreativeModeTabContentsEvent? ->
             this.addCreative(event!!)
