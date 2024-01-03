@@ -1,6 +1,7 @@
 package hootisman.stick
 
 import com.mojang.logging.LogUtils
+import hootisman.stick.animation.HandAnimations
 import hootisman.stick.datagen.StickDataGen
 import hootisman.stick.init.*
 import net.neoforged.bus.api.IEventBus
@@ -20,19 +21,24 @@ class StickMod(modEventBus: IEventBus) {
             this.commonSetup(event!!)
         }
 
+        //server
         StickBlocks.BLOCKS.register(modEventBus)
         StickItems.ITEMS.register(modEventBus)
         StickEntities.ENTITIES.register(modEventBus)
         StickCreativeTabs.CREATIVE_MODE_TABS.register(modEventBus)
-        modEventBus.addListener(StickDataGen::onGatherDataEvent)
-        modEventBus.addListener(StickItems::onRegisterColorHandlers)
-
-        modEventBus.register(StickEntityRenderers)
-
 
         modEventBus.addListener { event: BuildCreativeModeTabContentsEvent? ->
             this.addCreative(event!!)
         }
+
+        //client
+
+        modEventBus.addListener(StickDataGen::onGatherDataEvent)
+        modEventBus.addListener(StickItems::onRegisterColorHandlers)
+        modEventBus.register(StickEntityRenderers)
+        HandAnimations.registerEntries()
+
+
 //        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC)
     }
     val LOGGER = LogUtils.getLogger()
