@@ -35,6 +35,7 @@ class StickMod(modEventBus: IEventBus) {
 
         modEventBus.addListener(StickDataGen::onGatherDataEvent)
         modEventBus.addListener(StickItems::onRegisterColorHandlers)
+//        modEventBus.register(StickRenderEvents)
         modEventBus.register(StickEntityRenderers)
         HandAnimations.registerEntries()
 
